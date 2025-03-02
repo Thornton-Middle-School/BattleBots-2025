@@ -2,6 +2,7 @@
 #include <utility>
 
 #include "robot-config.h"
+#include "tank_drive.h"
 
 void tank_drive(motor_group Left_motors, motor_group Right_motors, int Max_Speed) {
     while (true) {

@@ -7,6 +7,9 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "vex.h"
+#include "robot_config.h"
+#include "tank_drive.h"
+#include "Arcade.h"
 
 using namespace vex;
 
@@ -17,12 +20,10 @@ vex::brain       Brain;
 
 
 int main() {
-
-    Brain.Screen.printAt( 10, 50, "Hello V5" );
    
     while(1) {
         
         // Allow other tasks to run
-        this_thread::sleep_for(10);
+        
     }
 }

@@ -1,12 +1,13 @@
-#include <algorithm>
-#include <utility>
+#include <bits/stdc++.h>
 
-#include "robot-config.h"
+#include "robot_config.h"
 #include "tank_drive.h"
 
 using namespace vex;
-void tank_drive(motor_group Left_motors, motor_group Right_motors, int Max_Speed) {
-    while (true) {
+void tank_drive(motor_group Left_motors, motor_group Right_motors, int Max_Speed)
+{
+    while (true)
+    {
         // Get the joystick values
         int leftSpeed = Controller1.Axis3.position();
         int rightSpeed = Controller1.Axis2.position();

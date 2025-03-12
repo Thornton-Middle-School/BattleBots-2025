@@ -27,6 +27,6 @@ void Arcade(motor_group Left_motors, motor_group Right_motors, int Max_Speed)
         Right_motors.spin(directionType::fwd, rightSpeed, velocityUnits::pct);
 
         // Allow other tasks to run
-        vex::task::sleep(20);
+        vex::this_thread::sleep_for(20);
     }
 }

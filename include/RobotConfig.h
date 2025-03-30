@@ -14,3 +14,6 @@ extern motor RightMotorA;
 extern motor RightMotorB;
 extern motor RightMotorC;
 extern motor RightMotorD;
+
+extern motor_group Left;
+extern motor_group Right;

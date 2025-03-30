@@ -1,10 +1,10 @@
 #include <bits/stdc++.h>
 
-#include "robot_config.h"
-#include "tank_drive.h"
+#include "RobotConfig.h"
+#include "TankDrive.h"
 
 using namespace vex;
-void tank_drive(motor_group Left_motors, motor_group Right_motors, int Max_Speed)
+void tank_drive(int MaxSpeed)
 {
     while (true)
     {
@@ -13,12 +13,12 @@ void tank_drive(motor_group Left_motors, motor_group Right_motors, int Max_Speed
         int rightSpeed = Controller1.Axis2.position();
 
         // Scale the speeds to the maximum speed
-        leftSpeed = leftSpeed * Max_Speed / 100;
-        rightSpeed = rightSpeed * Max_Speed / 100;
+        leftSpeed = leftSpeed * MaxSpeed / 100;
+        rightSpeed = rightSpeed * MaxSpeed / 100;
 
         // Set the motor speeds
-        Left_motors.spin(forward, leftSpeed, percent);
-        Right_motors.spin(forward, rightSpeed, percent);
+        Left.spin(vex::forward, leftSpeed, percent);
+        Right.spin(vex::forward, rightSpeed, percent);
 
         // Allow other tasks to run
         task::sleep(20);

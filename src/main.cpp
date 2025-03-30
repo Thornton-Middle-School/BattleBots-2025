@@ -7,19 +7,59 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "vex.h"
-#include "robot_config.h"
-#include "tank_drive.h"
+#include "RobotConfig.h"
+#include "TankDrive.h"
 #include "Arcade.h"
 
+#include <bits/stdc++.h>
+
+using namespace std;
 using namespace vex;
 
-// A global instance of vex::brain used for printing to the V5 brain screen
-vex::brain       Brain;
+vex::brain Brain;
+auto &screen = Brain.Screen;
 
-int main() {
-    while(1) {
-        
-        // Allow other tasks to run
-        
+void UpdateScreen(string current, string howtotoggle)
+{
+    screen.clearScreen();
+
+    screen.setCursor(1, 1);
+    screen.print(current);
+
+    screen.setCursor(5, 1);
+    screen.print(howtotoggle);
+}
+
+int main()
+{
+    bool tank = true;
+    screen.setFont(mono20);
+
+    UpdateScreen("Using Tank Drive", "Press A to switch to Arcade");
+
+    while (true)
+    {
+        if (tank)
+        {
+            tank_drive(100);
+        }
+        else
+        {
+            arcade(100);
+        }
+
+        if (Controller1.ButtonA.pressing() && tank)
+        {
+            tank = false;
+            UpdateScreen("Using Arcade Drive", "Press X to switch to Tank");
+        }
+
+        if (Controller1.ButtonX.pressing() && !tank)
+        {
+            tank = true;
+            UpdateScreen("Using Tank Drive", "Press A to switch to Arcade");
+        }
     }
+
+    return 0;
 }

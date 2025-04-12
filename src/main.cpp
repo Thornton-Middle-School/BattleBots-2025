@@ -41,11 +41,11 @@ int main()
     {
         if (tank)
         {
-            tank_drive(100);
+            tank_drive(75);
         }
         else
         {
-            arcade(100);
+            arcade(75);
         }
 
         if (Controller1.ButtonA.pressing() && tank)

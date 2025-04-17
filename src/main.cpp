@@ -16,6 +16,8 @@
 using namespace std;
 using namespace vex;
 
+#define eq5(a, b, c, d, e) (a == b && b == c && c == d && d == e)
+
 vex::brain Brain;
 auto &screen = Brain.Screen;
 
@@ -39,6 +41,11 @@ int main()
 
     while (true)
     {
+        if (eq5(Controller1.Axis1.position(), Controller1.Axis2.position(), Controller3.Axis1.position(), Controller1.Axis4.position(), 0)) {
+            Left.stop();
+            Right.stop();
+        }
+        
         if (tank)
         {
             tank_drive(75);

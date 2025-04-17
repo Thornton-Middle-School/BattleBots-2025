@@ -42,8 +42,8 @@ int main()
     while (true)
     {
         if (eq5(Controller1.Axis1.position(), Controller1.Axis2.position(), Controller1.Axis3.position(), Controller1.Axis4.position(), 0)) {
-            Left.stop();
-            Right.stop();
+            Left.stop(V5MotorBrakeMode::hold);
+            Right.stop(V5MotorBrakeMode::hold);
         }
 
         if (tank)

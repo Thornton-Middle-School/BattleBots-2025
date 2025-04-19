@@ -8,10 +8,10 @@ using namespace vex;
 
 #define clip(val, minima, maxima) std::max(std::min(val, maxima), minima)
 
-void arcade_drive(int MaxSpeed)
+void arcade_drive(int MaxSpeed, bool split)
 {
     // Look at x & y axis of right joystick
-    int forward = Controller.Axis3.position();
+    int forward = (split ? Controller.Axis3 : Controller.Axis2).position();
     int turn = Controller.Axis1.position();
 
     // Set speeds

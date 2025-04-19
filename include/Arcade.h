@@ -1,3 +1,3 @@
 #pragma once
 
-void arcade_drive(int MaxSpeed);
+void arcade_drive(int MaxSpeed, bool split);

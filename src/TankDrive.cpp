@@ -1,26 +1,22 @@
-#include <bits/stdc++.h>
+#include <vex.h>
+#include <algorithm>
 
 #include "RobotConfig.h"
 #include "TankDrive.h"
 
 using namespace vex;
+using namespace std;
+
 void tank_drive(int MaxSpeed)
 {
-    while (true)
-    {
-        // Get the joystick values
-        int leftSpeed = Controller1.Axis3.position();
-        int rightSpeed = Controller1.Axis2.position();
+    // y-axis of left & right joysticks (for corresponding side of drive train)
+    int leftSpeed = Controller.Axis3.position();
+    int rightSpeed = Controller.Axis2.position();
 
-        // Scale the speeds to the maximum speed
-        leftSpeed = leftSpeed * MaxSpeed / 100;
-        rightSpeed = rightSpeed * MaxSpeed / 100;
+    // Set speeds
+    leftSpeed = leftSpeed * MaxSpeed / 100;
+    rightSpeed = rightSpeed * MaxSpeed / 100;
 
-        // Set the motor speeds
-        Left.spin(vex::forward, leftSpeed, percent);
-        Right.spin(vex::forward, rightSpeed, percent);
-
-        // Allow other tasks to run
-        task::sleep(20);
-    }
+    Left.spin(directionType::fwd, leftSpeed, velocityUnits::pct);
+    Right.spin(directionType::fwd, rightSpeed, velocityUnits::pct);
 }

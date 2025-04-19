@@ -1,9 +1,12 @@
+#include <vex.h>
 #include "RobotConfig.h"
+
 using namespace vex;
 
 brain Brain;
+brain::lcd &screen = Brain.Screen;
 
-controller Controller1 = controller();
+controller Controller = controller();
 motor LeftMotorA = motor(PORT1, ratio18_1, true);
 motor LeftMotorB = motor(PORT2, ratio18_1, true);
 motor LeftMotorC = motor(PORT3, ratio18_1, true);

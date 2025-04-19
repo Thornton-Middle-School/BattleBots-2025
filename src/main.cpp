@@ -62,7 +62,7 @@ void SelectionToFunct() {
     // Cycle through the drive modes using a switch-case
     switch (currentMode) {
         case DriveMode::Tank:
-            currentMode = DriveMode::Arcade;
+            currentMode = DriveMode::Arcade_Split;
             UpdateControllerScreen("Using Tank Drive", "Press A to switch to Arcade");
             tank_drive(75);
             break;

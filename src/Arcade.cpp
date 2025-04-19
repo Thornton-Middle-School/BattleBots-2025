@@ -11,7 +11,7 @@ using namespace vex;
 void arcade_drive(int MaxSpeed)
 {
     // Look at x & y axis of right joystick
-    int forward = Controller.Axis2.position();
+    int forward = Controller.Axis3.position();
     int turn = Controller.Axis1.position();
 
     // Set speeds

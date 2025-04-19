@@ -61,12 +61,33 @@ void useTank()
 {
     tank = true;
     UpdateControllerScreen("Using Tank Drive", "Press A to switch to Arcade");
+    tank_drive(75);
+
 }
 
 void useArcade()
 {
     tank = false;
-    UpdateControllerScreen("Using Arcade Drive", "Press X to switch to Tank");
+    UpdateControllerScreen("Using Arcade Drive", "Press A to switch to Tank");
+    arcade_drive(75);
+
+}
+
+enum class DriveMode { Tank, Arcade };
+
+DriveMode currentMode = DriveMode::Tank;
+
+void SelectionToFunct() {
+    switch (currentMode) {
+        case DriveMode::Tank:
+            currentMode = DriveMode::Arcade;
+            useArcade();
+            break;
+        case DriveMode::Arcade:
+            currentMode = DriveMode::Tank;
+            useTank();
+            break;
+    }
 }
 
 int main()
@@ -76,10 +97,7 @@ int main()
 
     screen.setFont(mono20);
 
-    useTank();
-
-    Controller.ButtonA.pressed(useArcade);
-    Controller.ButtonX.pressed(useTank);
+    Controller.ButtonA.pressed(SelectionToFunct);
 
     // Main Loop
     while (true)
@@ -89,16 +107,6 @@ int main()
         {
             Left.stop(brakeType::hold);
             Right.stop(brakeType::hold);
-        }
-
-        // Drive (MaxSpeed is 75 to not compromise torque as much)
-        if (tank)
-        {
-            tank_drive(75);
-        }
-        else
-        {
-            arcade_drive(75);
         }
 
         // Reduce overhead & let other tasks run

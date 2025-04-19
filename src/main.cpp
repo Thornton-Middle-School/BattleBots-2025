@@ -54,26 +54,7 @@ void UpdateControllerScreen(string mode, string togglemethod)
     Controller.Screen.print("%s", togglemethod.c_str());
 }
 
-// Switching drive methods
-bool tank = true;
-
-void useTank()
-{
-    tank = true;
-    UpdateControllerScreen("Using Tank Drive", "Press A to switch to Arcade");
-    tank_drive(75);
-
-}
-
-void useArcade()
-{
-    tank = false;
-    UpdateControllerScreen("Using Arcade Drive", "Press A to switch to Tank");
-    arcade_drive(75);
-
-}
-
-enum class DriveMode : int { Tank = 1, Arcade = 2, Custom = 3 };
+enum class DriveMode : int { Tank = 1, Arcade_Split = 2, Arcade = 3 };
 
 DriveMode currentMode = DriveMode::Tank;
 
@@ -82,17 +63,21 @@ void SelectionToFunct() {
     switch (currentMode) {
         case DriveMode::Tank:
             currentMode = DriveMode::Arcade;
-            useTank();
+            UpdateControllerScreen("Using Tank Drive", "Press A to switch to Arcade");
+            tank_drive(75);
+            break;
+
+        case DriveMode::Arcade_Split:
+            currentMode = DriveMode::Custom;
+            UpdateControllerScreen("Using Split Arcade Drive", "Press A to switch to Arcade");
+            arcade_drive(75, true);
+
             break;
 
         case DriveMode::Arcade:
-            currentMode = DriveMode::Custom;
-            useArcade(); // Replace with your custom drive function when implemented
-            break;
-
-        case DriveMode::Custom:
             currentMode = DriveMode::Tank;
-            useTank();
+            UpdateControllerScreen("Using Split Arcade Drive", "Press A to switch to Arcade");
+            arcade_drive(75, false);
             break;
 
         default:

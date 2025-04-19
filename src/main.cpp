@@ -26,7 +26,7 @@
 using namespace vex;
 using namespace std;
 
-#define eq5(a, b, c, d, e) (a == b && a == c && a == d && a == e)
+
 
 void vexcodeInit()
 {
@@ -54,35 +54,37 @@ void UpdateControllerScreen(string mode, string togglemethod)
     Controller.Screen.print("%s", togglemethod.c_str());
 }
 
-// Switching drive methods
-enum class DriveMode
-{
-    Tank,
-    Arcade,
-    SplitArcade
-};
+enum class DriveMode : int { Tank = 1, Arcade_Split = 2, Arcade = 3 };
 
-DriveMode method = DriveMode::Tank;
+DriveMode currentMode = DriveMode::Tank;
 
-void useTank()
-{
-    method = DriveMode::Tank;
-    UpdateControllerScreen("Using Tank Drive", "Press A to switch to Arcade or B to switch to Split Arcade");
-    tank_drive(75);
-}
+void SelectionToFunct() {
+    // Cycle through the drive modes using a switch-case
+    switch (currentMode) {
+        case DriveMode::Tank:
+            currentMode = DriveMode::Arcade_Split;
+            UpdateControllerScreen("Using Tank Drive", "Press A to switch to Arcade");
+            tank_drive(75);
+            break;
 
-void useSplitArcade()
-{
-    method = DriveMode::SplitArcade;
-    UpdateControllerScreen("Using Split Arcade Drive", "Press X to switch to Tank or A to switch to Arcade");
-    arcade_drive(75, true);
-}
+        case DriveMode::Arcade_Split:
+            currentMode = DriveMode::Custom;
+            UpdateControllerScreen("Using Split Arcade Drive", "Press A to switch to Arcade");
+            arcade_drive(75, true);
 
-void useArcade()
-{
-    method = DriveMode::Arcade;
-    UpdateControllerScreen("Using Arcade Drive", "Press X to switch to Tank or B to switch to Split Arcade");
-    arcade_drive(75, false);
+            break;
+
+        case DriveMode::Arcade:
+            currentMode = DriveMode::Tank;
+            UpdateControllerScreen("Using Split Arcade Drive", "Press A to switch to Arcade");
+            arcade_drive(75, false);
+            break;
+
+        default:
+            currentMode = DriveMode::Tank;
+            useTank();
+            break;
+    }
 }
 
 int main()
@@ -90,12 +92,9 @@ int main()
     // Initialization & Callbacks
     vexcodeInit();
 
-    useTank();
     screen.setFont(mono20);
 
-    Controller.ButtonA.pressed(useArcade);
-    Controller.ButtonB.pressed(useSplitArcade);
-    Controller.ButtonX.pressed(useTank);
+    Controller.ButtonA.pressed(SelectionToFunct);
 
     // Main Loop
     while (true)

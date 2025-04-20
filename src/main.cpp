@@ -42,7 +42,7 @@ void vexcodeInit()
     srand(seed);
 }
 
-// For showing what drive control method is used + how to switch
+// For showing what drive control current_mode is used + how to switch
 void UpdateControllerScreen(string mode, string togglemethod)
 {
     Controller.Screen.clearScreen();
@@ -62,27 +62,24 @@ enum class DriveMode
     SplitArcade
 };
 
-DriveMode method = DriveMode::Tank;
+DriveMode current_mode = DriveMode::Tank;
 
 void useTank()
 {
-    method = DriveMode::Tank;
+    current_mode = DriveMode::Tank;
     UpdateControllerScreen("Using Tank Drive", "Press A to switch to Arcade or B to switch to Split Arcade");
-    tank_drive(75);
 }
 
 void useSplitArcade()
 {
-    method = DriveMode::SplitArcade;
+    current_mode = DriveMode::SplitArcade;
     UpdateControllerScreen("Using Split Arcade Drive", "Press X to switch to Tank or A to switch to Arcade");
-    arcade_drive(75, true);
 }
 
 void useArcade()
 {
-    method = DriveMode::Arcade;
+    current_mode = DriveMode::Arcade;
     UpdateControllerScreen("Using Arcade Drive", "Press X to switch to Tank or B to switch to Split Arcade");
-    arcade_drive(75, false);
 }
 
 int main()
@@ -105,6 +102,21 @@ int main()
         {
             Left.stop(brakeType::hold);
             Right.stop(brakeType::hold);
+        }
+
+        switch (current_mode)
+        {
+        case DriveMode::Tank:
+            tank_drive(75);
+            break;
+
+        case DriveMode::SplitArcade:
+            arcade_drive(75, true);
+            break;
+
+        default:
+            arcade_drive(75, false);
+            break;
         }
 
         // Reduce overhead & let other tasks run

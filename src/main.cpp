@@ -42,7 +42,7 @@ void vexcodeInit()
     srand(seed);
 }
 
-// For showing what drive control current_mode is used + how to switch
+// For showing what drive control method is used + how to switch
 void UpdateControllerScreen(string mode, string togglemethod)
 {
     Controller.Screen.clearScreen();

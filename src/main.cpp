@@ -19,8 +19,7 @@
 
 #include "vex.h"
 #include "RobotConfig.h"
-#include "Arcade.h"
-#include "TankDrive.h"
+#include "Driver.h"
 
 // Allows for easier use of the VEX Library
 using namespace vex;
@@ -55,14 +54,8 @@ void UpdateControllerScreen(string mode, string togglemethod)
 }
 
 // Switching drive methods
-enum class DriveMode
-{
-    Tank,
-    Arcade,
-    SplitArcade
-};
-
 DriveMode current_mode = DriveMode::Tank;
+Driver driver = Driver();
 
 void useTank()
 {
@@ -97,27 +90,7 @@ int main()
     // Main Loop
     while (true)
     {
-        // Hold everything still if joysticks' states are unchanged
-        if (eq5(Controller.Axis1.position(), Controller.Axis2.position(), Controller.Axis3.position(), Controller.Axis4.position(), 0))
-        {
-            Left.stop(brakeType::hold);
-            Right.stop(brakeType::hold);
-        }
-
-        switch (current_mode)
-        {
-        case DriveMode::Tank:
-            tank_drive(75);
-            break;
-
-        case DriveMode::SplitArcade:
-            arcade_drive(75, true);
-            break;
-
-        default:
-            arcade_drive(75, false);
-            break;
-        }
+        driver.drive(current_mode);
 
         // Reduce overhead & let other tasks run
         this_thread::sleep_for(20);

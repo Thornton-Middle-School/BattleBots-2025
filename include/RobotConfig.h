@@ -6,7 +6,7 @@ using namespace vex;
 extern brain Brain;
 
 extern controller Controller;
-extern controller::lcd screen;
+extern controller::lcd &screen;
 
 extern motor LeftMotorA;
 extern motor LeftMotorB;

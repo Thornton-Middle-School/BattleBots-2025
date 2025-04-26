@@ -45,10 +45,10 @@ void UpdateControllerScreen(string mode, string togglemethod)
     screen.clearScreen();
 
     screen.setCursor(1, 1);
-    Controller.Screen.print("%s", mode.c_str());
+    screen.print("%s", mode.c_str());
 
-    Controller.Screen.newLine();
-    Controller.Screen.print("%s", togglemethod.c_str());
+    screen.newLine();
+    screen.print("%s", togglemethod.c_str());
 }
 
 // Switching drive methods

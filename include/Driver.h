@@ -24,12 +24,12 @@ class Driver
 {
 private:
     bool released(int value);
-    bool hold();
+    bool hold(const DriveMode &mode);
     int accelerate(int current, int target);
     void tank();
     void arcade(bool split);
 
 public:
     Driver();
-    void drive(DriveMode mode);
+    void drive(const DriveMode &mode);
 };

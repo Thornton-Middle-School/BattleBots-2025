@@ -1,6 +1,8 @@
 #include "Driver.h"
 #include "RobotConfig.h"
 #include <stdexcept>
+#include <vector>
+#include <map>
 
 using namespace vex;
 using namespace std;
@@ -12,19 +14,39 @@ bool Driver::released(int axis)
 }
 
 // Hold the robot completely still if the joystick is in a neutral position
-bool Driver::hold()
+bool Driver::hold(const DriveMode &mode)
 {
-    if (released(Controller.Axis1.position()) &&
-        released(Controller.Axis2.position()) &&
-        released(Controller.Axis3.position()) &&
-        released(Controller.Axis4.position()))
+    // Only check the axes that are used in the current mode
+    int first = Controller.Axis1.position();
+    int second = Controller.Axis2.position();
+    int third = Controller.Axis3.position();
+    int fourth = Controller.Axis4.position();
+
+    map<DriveMode, vector<int>> axes = {
+        {DriveMode::Tank, {second, third}},
+        {DriveMode::Arcade, {first, second}},
+        {DriveMode::SplitArcade, {first, third}},
+    };
+
+    bool should_hold = true;
+
+    for (int axis : axes[mode])
+    {
+        if (!released(axis))
+        {
+            should_hold = false;
+            break;
+        }
+    }
+
+    // Hold & report
+    if (should_hold)
     {
         Left.stop(brakeType::hold);
         Right.stop(brakeType::hold);
-        return true;
     }
 
-    return false;
+    return should_hold;
 }
 
 // Accelerate the motors' speed by a factor of ACCELERATION to the target speed
@@ -82,9 +104,9 @@ void Driver::arcade(bool split)
 
 Driver::Driver() {}
 
-void Driver::drive(DriveMode mode)
+void Driver::drive(const DriveMode &mode)
 {
-    if (hold())
+    if (hold(mode))
     {
         return;
     }

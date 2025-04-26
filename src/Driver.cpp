@@ -52,7 +52,7 @@ bool Driver::hold(const DriveMode &mode)
 // Accelerate the motors' speed by a factor of ACCELERATION to the target speed
 int Driver::accelerate(int current, int target)
 {
-    return current + (target - current) * ACCELERATION;
+    return current + (int) ((target - current) * ACCELERATION);
 }
 
 // Tank drive

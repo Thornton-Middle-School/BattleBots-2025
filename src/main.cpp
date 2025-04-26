@@ -19,14 +19,11 @@
 
 #include "vex.h"
 #include "RobotConfig.h"
-#include "Arcade.h"
-#include "TankDrive.h"
+#include "Driver.h"
 
 // Allows for easier use of the VEX Library
 using namespace vex;
 using namespace std;
-
-#define eq5(a, b, c, d, e) (a == b && a == c && a == d && a == e)
 
 void vexcodeInit()
 {
@@ -45,24 +42,18 @@ void vexcodeInit()
 // For showing what drive control method is used + how to switch
 void UpdateControllerScreen(string mode, string togglemethod)
 {
-    Controller.Screen.clearScreen();
+    screen.clearScreen();
 
-    Controller.Screen.setCursor(1, 1);
-    Controller.Screen.print("%s", mode.c_str());
+    screen.setCursor(1, 1);
+    screen.print("%s", mode.c_str());
 
-    Controller.Screen.setCursor(5, 1);
-    Controller.Screen.print("%s", togglemethod.c_str());
+    screen.newLine();
+    screen.print("%s", togglemethod.c_str());
 }
 
 // Switching drive methods
-enum class DriveMode
-{
-    Tank,
-    Arcade,
-    SplitArcade
-};
-
 DriveMode current_mode = DriveMode::Tank;
+Driver driver = Driver();
 
 void useTank()
 {
@@ -88,7 +79,6 @@ int main()
     vexcodeInit();
 
     useTank();
-    screen.setFont(mono20);
 
     Controller.ButtonA.pressed(useArcade);
     Controller.ButtonB.pressed(useSplitArcade);
@@ -97,27 +87,7 @@ int main()
     // Main Loop
     while (true)
     {
-        // Hold everything still if joysticks' states are unchanged
-        if (eq5(Controller.Axis1.position(), Controller.Axis2.position(), Controller.Axis3.position(), Controller.Axis4.position(), 0))
-        {
-            Left.stop(brakeType::hold);
-            Right.stop(brakeType::hold);
-        }
-
-        switch (current_mode)
-        {
-        case DriveMode::Tank:
-            tank_drive(75);
-            break;
-
-        case DriveMode::SplitArcade:
-            arcade_drive(75, true);
-            break;
-
-        default:
-            arcade_drive(75, false);
-            break;
-        }
+        driver.drive(current_mode);
 
         // Reduce overhead & let other tasks run
         this_thread::sleep_for(20);

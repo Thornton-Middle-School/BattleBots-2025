@@ -4,9 +4,9 @@
 using namespace vex;
 
 brain Brain;
-brain::lcd &screen = Brain.Screen;
 
 controller Controller = controller();
+controller::lcd &screen = Controller.Screen;
 
 motor LeftMotorA = motor(PORT1, ratio18_1, true);
 motor LeftMotorB = motor(PORT2, ratio18_1, true);
